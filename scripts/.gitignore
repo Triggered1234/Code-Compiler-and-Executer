@@ -1,0 +1,68 @@
+# Build directories
+build/
+install/
+.cmake/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Compiled objects
+*.o
+*.so
+*.a
+*.dll
+*.exe
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Runtime directories
+processing/
+outgoing/
+
+# Coverage reports
+coverage_html/
+coverage.info
+*.gcov
+*.gcda
+*.gcno
+
+# Valgrind output
+vgcore.*
+*.memcheck
+
+# Editor backup files
+*~
+.#*
+#*#
+
+# Package files
+*.deb
+*.rpm
+*.tar.gz
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Node modules (if using npm for any tools)
+node_modules/
+
+# Local configuration
+local.conf
+*.local
