@@ -2,6 +2,9 @@
 build/
 install/
 .cmake/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
 
 # IDE files
 .vscode/
@@ -66,3 +69,15 @@ node_modules/
 # Local configuration
 local.conf
 *.local
+
+# CMake specific
+Makefile
+*.cmake
+!CMakeLists.txt
+!cmake/
+CTestTestfile.cmake
+Testing/
+
+# Build artifacts
+bin/
+lib/
