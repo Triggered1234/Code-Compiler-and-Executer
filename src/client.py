@@ -57,60 +57,7 @@ class CrossPlatformClient:
         try:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.sock.connect((SERVER_IP, PORT))
-            print(f"Error sending code: {e}")
-    
-    def load_file(self, filename):
-        """
-        Load C source code from a file.
-        
-        Args:
-            filename (str): Path to the file containing C source code
-            
-        Returns:
-            str or None: File contents if successful, None on error
-            
-        Note:
-            Handles file not found and other I/O errors gracefully.
-        """
-        try:
-            with open(filename, 'r') as file:
-                code = file.read()
-                print(f"Loaded code from file: {filename}")
-                return code
-        except FileNotFoundError:
-            print(f"Error: File '{filename}' not found")
-            return None
-        except Exception as e:
-            print(f"Error reading file: {e}")
-            return None
-    
-    def run(self):
-        """
-        Main client loop.
-        
-        Provides interactive interface for code submission with cross-platform
-        compatibility. Supports interactive code entry, file loading, and
-        built-in help with sample code.
-        
-        Features:
-            - Interactive multi-line code entry (end with 'END')
-            - File loading with 'load <filename>' command
-            - Built-in help with sample code
-            - Graceful error handling and user feedback
-            - Cross-platform compatibility
-        """
-        """
-        Load C source code from a file.
-        
-        Args:
-            filename (str): Path to the file containing C source code
-            
-        Returns:
-            str or None: File contents if successful, None on error
-            
-        Note:
-            Handles file not found and other I/O errors gracefully.
-        """f"Connected to server on port {PORT}")
+            print(f"Connected to server on port {PORT}")
             return True
         except Exception as e:
             print(f"Connection failed: {e}")
@@ -138,6 +85,18 @@ class CrossPlatformClient:
             print(f"Error sending code: {e}")
     
     def load_file(self, filename):
+        """
+        Load C source code from a file.
+        
+        Args:
+            filename (str): Path to the file containing C source code
+            
+        Returns:
+            str or None: File contents if successful, None on error
+            
+        Note:
+            Handles file not found and other I/O errors gracefully.
+        """
         try:
             with open(filename, 'r') as file:
                 code = file.read()
@@ -150,7 +109,48 @@ class CrossPlatformClient:
             print(f"Error reading file: {e}")
             return None
     
+    def show_sample_code(self):
+        """
+        Display sample C code and optionally send it to server.
+        
+        Shows a simple "Hello World" example and asks the user if they
+        want to submit it for compilation and execution.
+        
+        Note:
+            This is a helper function to demonstrate the system functionality.
+        """
+        print("\n=== SAMPLE C CODE ===")
+        print("#include <stdio.h>")
+        print("int main() {")
+        print("    printf(\"Hello from Python client!\\n\");")
+        print("    return 0;")
+        print("}")
+        print("====================")
+        
+        answer = input("Do you want to send this sample code? (y/n): ")
+        if answer.lower() in ['y', 'yes']:
+            sample_code = """#include <stdio.h>
+int main() {
+    printf("Hello from Python client!\\n");
+    return 0;
+}"""
+            self.send_code(sample_code)
+    
     def run(self):
+        """
+        Main client loop.
+        
+        Provides interactive interface for code submission with cross-platform
+        compatibility. Supports interactive code entry, file loading, and
+        built-in help with sample code.
+        
+        Features:
+            - Interactive multi-line code entry (end with 'END')
+            - File loading with 'load <filename>' command
+            - Built-in help with sample code
+            - Graceful error handling and user feedback
+            - Cross-platform compatibility
+        """
         if not self.connect_to_server():
             return
         
@@ -166,7 +166,8 @@ class CrossPlatformClient:
                 command = input("\nClient> ").strip()
                 
                 if command == "quit":
-                    self.sock.send(b"QUIT")
+                    if self.sock:
+                        self.sock.send(b"QUIT")
                     break
                 
                 if command == "help":
@@ -205,33 +206,6 @@ class CrossPlatformClient:
         if self.sock:
             self.sock.close()
         print("Disconnected from server.")
-    
-    def show_sample_code(self):
-        """
-        Display sample C code and optionally send it to server.
-        
-        Shows a simple "Hello World" example and asks the user if they
-        want to submit it for compilation and execution.
-        
-        Note:
-            This is a helper function to demonstrate the system functionality.
-        """
-        print("\n=== SAMPLE C CODE ===")
-        print("#include <stdio.h>")
-        print("int main() {")
-        print("    printf(\"Hello from Python client!\\n\");")
-        print("    return 0;")
-        print("}")
-        print("====================")
-        
-        answer = input("Do you want to send this sample code? (y/n): ")
-        if answer.lower() in ['y', 'yes']:
-            sample_code = """#include <stdio.h>
-int main() {
-    printf("Hello from Python client!\\n");
-    return 0;
-}"""
-            self.send_code(sample_code)
 
 def main():
     """
